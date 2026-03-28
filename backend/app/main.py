@@ -2,9 +2,16 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from app.db import get_db
+from app import models
+from app.db import Base, engine, get_db
+from app.routes.medicines import router as medicines_router
+from app.routes.suppliers import router as suppliers_router
+from app.routes.customers import router as customers_router
 
-app = FastAPI(title="MSMS API")
+app = FastAPI(title="Medical Store Management System API")
+
+
+Base.metadata.create_all(bind=engine)
 
 
 @app.get("/")
@@ -28,5 +35,10 @@ def db_check(db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"database connection failed: {str(e)}",
+            detail=f"Database connection failed: {str(e)}",
         )
+
+
+app.include_router(medicines_router)
+app.include_router(suppliers_router)
+app.include_router(customers_router)

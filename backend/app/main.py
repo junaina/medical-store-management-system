@@ -4,9 +4,11 @@ from sqlalchemy.orm import Session
 
 from app import models
 from app.db import Base, engine, get_db
+from app.routes.auth import router as auth_router
 from app.routes.medicines import router as medicines_router
 from app.routes.suppliers import router as suppliers_router
 from app.routes.customers import router as customers_router
+from app.routes.purchases import router as purchases_router
 
 app = FastAPI(title="Medical Store Management System API")
 
@@ -38,7 +40,8 @@ def db_check(db: Session = Depends(get_db)):
             detail=f"Database connection failed: {str(e)}",
         )
 
-
+app.include_router(auth_router)
 app.include_router(medicines_router)
 app.include_router(suppliers_router)
 app.include_router(customers_router)
+app.include_router(purchases_router)

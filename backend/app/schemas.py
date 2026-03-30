@@ -1,6 +1,5 @@
 from datetime import date, datetime
-from typing import Optional
-
+from typing import Optional, Sequence
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -149,3 +148,21 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+class SalesSummary(BaseModel):
+    total_sales: int
+    total_quantity_sold: int
+    total_revenue: float
+
+
+class DailySalesReportResponse(BaseModel):
+    report_date: date
+    summary: SalesSummary
+    sales: Sequence[SaleResponse]
+
+
+class MonthlySalesReportResponse(BaseModel):
+    year: int
+    month: int
+    summary: SalesSummary
+    sales: Sequence[SaleResponse]

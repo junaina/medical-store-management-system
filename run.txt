@@ -1,0 +1,7 @@
+python backend: 
+
+./venv/Scripts/activate
+uvicorn app.main:app --reload
+
+react frontend:
+npm start
